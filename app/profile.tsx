@@ -27,6 +27,7 @@ const ACTIVITY_LEVELS = [
 
 export default function ProfileScreen() {
   const [step, setStep] = useState(1);
+  const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState({
     age: '',
     weight: '',
@@ -57,16 +58,18 @@ export default function ProfileScreen() {
   const saveProfile = () => {
     // Validate required fields
     if (!profile.age || !profile.weight || !profile.goal) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      console.log('Please fill in all required fields');
       return;
     }
     
-    // For now, just show success and go back
-    Alert.alert(
-      'Profile Saved! 🎉', 
-      'Welcome to FitPal! Your AI coach is ready to help.',
-      [{ text: 'Start Coaching', onPress: () => router.back() }]
-    );
+    // Show saving state
+    setSaving(true);
+    
+    // Simulate saving delay and navigate
+    setTimeout(() => {
+      console.log('Profile saved successfully!');
+      router.replace('/dashboard');
+    }, 1000);
   };
 
   const renderStep1 = () => (
@@ -218,9 +221,13 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         )}
         
-        <TouchableOpacity style={styles.nextButton} onPress={nextStep}>
+        <TouchableOpacity 
+          style={[styles.nextButton, saving && styles.nextButtonDisabled]} 
+          onPress={nextStep}
+          disabled={saving}
+        >
           <Text style={styles.nextButtonText}>
-            {step === 3 ? 'Complete Setup' : 'Next'}
+            {saving ? 'Saving...' : step === 3 ? 'Complete Setup' : 'Next'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -393,5 +400,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  nextButtonDisabled: {
+    backgroundColor: '#666',
   },
 });

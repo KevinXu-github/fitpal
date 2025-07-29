@@ -27,6 +27,13 @@ export default function RootLayout() {
           presentation: 'modal'
         }} 
       />
+      <Stack.Screen 
+        name="dashboard" 
+        options={{ 
+          title: 'FitPal Dashboard',
+          headerShown: false
+        }} 
+      />
     </Stack>
   );
 }
